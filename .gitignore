@@ -30,3 +30,8 @@
 *.exe
 *.out
 *.app
+
+# Project files
+whatsapp-api-client-cpp/
+.editorconfig
+
