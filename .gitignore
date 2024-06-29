@@ -34,4 +34,18 @@
 # Project files
 whatsapp-api-client-cpp/
 .editorconfig
+vcpkg/
 
+# Visual Studio.
+/.vs/whatsapp-api-client-cpp
+/packages
+/Release
+/Debug
+/whatsapp-api-client-cpp/Debug
+/whatsapp-api-client-cpp/Release
+/x64
+/whatsapp-api-client-cpp/x64
+/.vs
+/.vscode
+/build
+/out
