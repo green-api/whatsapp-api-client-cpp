@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.8.0)
 project(whatsapp-api-client-cpp VERSION 0.1.0)
 
-set(CMAKE_TOOLCHAIN_FILE F:/projects/GREEN-API/C++/vcpkg/scripts/buildsystems/vcpkg.cmake)
+set(CMAKE_TOOLCHAIN_FILE "${CMAKE_SOURCE_DIR}/vcpkg/scripts/buildsystems/vcpkg.cmake")
 
 add_library(whatsapp-api-client-cpp STATIC)
 
