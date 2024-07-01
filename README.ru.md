@@ -154,6 +154,7 @@ nlohmann::json sendMessageJson{
 
 | Описание                                             | Модуль                                                                   |
 |------------------------------------------------------|--------------------------------------------------------------------------|
+| Пример отправки текста                               | [main.cpp](./main.cpp)                         						  |
 | Примеры работы методов аккаунта                      | [test_accaunt.cpp](./examples/test_accaunt.cpp)                          |
 | Примеры работы методов отправки                      | [test_sending.cpp](./examples/test_sending.cpp)                          |
 | Примеры работы методов получения                     | [test_receiving.cpp](./examples/test_receiving.cpp)                      |
