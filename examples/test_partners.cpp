@@ -1,4 +1,4 @@
-#include "greenapi.hpp"
+#include "../include/greenapi.hpp"
 
 /*
 * Examples of partners methods methods working

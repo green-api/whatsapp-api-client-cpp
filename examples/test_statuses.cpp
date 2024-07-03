@@ -1,4 +1,4 @@
-#include "greenapi.hpp"
+#include "../include/greenapi.hpp"
 
 /*
 * Examples of statuses methods working
@@ -19,6 +19,7 @@ int main_statuses() {
 	* The method is aimed for sending a text status.
 	* https://green-api.com/en/docs/api/statuses/SendTextStatus/
 	* @param status - data for publishing status
+	* @return greenapi::Response structure with method response data
 	*/
 
 	nlohmann::json statusSendTextStatus{
