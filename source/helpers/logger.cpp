@@ -65,7 +65,7 @@ namespace greenapi {
 #if defined(_MSC_VER) || defined(__MINGW32__)
 		localtime_s(&now_tm, &now_time);
 #else
-		localtime_r(&now_tm, &now_time);
+		localtime_r(&now_time, &now_tm);
 #endif
 		char buffer[20];
 		strftime(buffer, sizeof(buffer), "%Y-%m-%d %H:%M:%S", &now_tm);
