@@ -52,7 +52,7 @@ To send a message or perform other GREEN API methods, the WhatsApp account in th
 
 ## Installation
 
-This library uses C++ 17, supports Linux (g++) and Windows (Visual Studio 2019/2022).
+This library uses C++ 17, supports Linux (GCC) and Windows (Visual Studio 2019/2022) compilers.
 
 Clone library repository
 
