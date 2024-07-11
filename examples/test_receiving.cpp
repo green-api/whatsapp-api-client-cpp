@@ -26,6 +26,10 @@ int main_receiving() {
 	if (receiveNotification.error) {
 		std::cout << "receiveNotification error: {status code: " << receiveNotification.status_code << ", request time: " << receiveNotification.total_time << ", body: " << receiveNotification.bodyStr << "}" << "\n" << std::endl;
 	}
+	else if (receiveNotification.bodyStr == "null") {
+		std::cout << "All notifications received" << "\n" << std::endl;
+		return 0;
+	}
 	else {
 		std::cout << "\treceiptId: " << receiveNotification.bodyJson["receiptId"] << "\n" << std::endl;
 		std::cout << "\tbody: " << receiveNotification.bodyJson["body"] << "\n" << std::endl;
