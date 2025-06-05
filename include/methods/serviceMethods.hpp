@@ -57,6 +57,13 @@ namespace greenapi {
 		Response getContactInfo(const nlohmann::json& message);
 
 		/*
+		* The method edits a message in a chat.
+		* https://green-api.com/en/docs/api/service/editMessage/
+		* @param message - data with chat number and message
+		*/
+		Response editMessage(const nlohmann::json& message);
+
+		/*
 		* The method deletes a message from a chat.
 		* https://green-api.com/en/docs/api/service/deleteMessage/
 		* @param message - data with chat number and message
