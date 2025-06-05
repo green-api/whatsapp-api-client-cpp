@@ -189,7 +189,7 @@ namespace greenapi
 		nlohmann::json requestMessage{ { "chatId", "" }, {"idMessage", ""}, {"message", ""} };
 
 		// Checking the chatId and idMessage
-		if (!message.contains("chatId") || !message.contains("idMessage" || !message.contains("message"))) {
+		if (!message.contains("chatId") || !message.contains("idMessage") || !message.contains("message")) {
 			response.bodyStr = "Required chatId, idMessage or message fields are missing";
 			return response;
 		}
