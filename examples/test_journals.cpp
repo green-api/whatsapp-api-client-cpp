@@ -13,7 +13,7 @@ int main_journals() {
 	* Be sure to use the apiUrl and mediaUrl parameters specifically for the higher instance, so you will get the most stable API operation and minimal method response time.
 	* https://console.green-api.com
 	*/
-	greenapi::GreenApi instance1101000001{ "https://7107.api.greenapi.com","https://7107.api.greenapi.com","710701676160","36f20dae0c964139a06f9d8223ea479e3722e557bc234be2a0" };
+	greenapi::GreenApi instance1101000001{ "api.green-api.com","api.green-api.com","710701676160","36f20dae0c964139a06f9d8223ea479e3722e557bc234be2a0" };
 
 	/*
 	* Example of using the lastIncomingMessages method
