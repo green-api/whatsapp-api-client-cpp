@@ -147,28 +147,6 @@ int main_account() {
 	}
 
 	/*
-	* Example of using the setProfilePicture method
-	* The method is aimed for setting an account picture.
-	* https://green-api.com/en/docs/api/account/SetProfilePicture/
-	* @param path - nlohmann::json obj path to the final file
-	*/
-	nlohmann::json setProfilePictureJson{
-		{ "file","C:/1.png" }
-	};
-
-	greenapi::Response setProfilePicture = instance1101000001.account.setProfilePicture(setProfilePictureJson);
-
-	if (setProfilePicture.error) {
-		std::cout << "setProfilePicture error: {status code: " << setProfilePicture.status_code << ", request time: " << setProfilePicture.total_time << ", body: " << setProfilePicture.bodyStr << "}" << "\n" << std::endl;
-	}
-	else {
-		std::cout << "instance " + instance1101000001.idInstance + " setProfilePicture:" << std::endl;
-		std::cout << "\turlAvatar: " << setProfilePicture.bodyJson["urlAvatar"] << std::endl;
-		std::cout << "\tsetProfilePicture: " << setProfilePicture.bodyJson["setProfilePicture"] << std::endl;
-		std::cout << "\treason: " << setProfilePicture.bodyJson["reason"] << "\n" << std::endl;
-	}
-
-	/*
 	* Example of using the getStateInstanceHistory method
 	* The method returns the history of instance state changes in chronological order.
 	* https://green-api.com/en/docs/api/account/GetStateInstanceHistory/

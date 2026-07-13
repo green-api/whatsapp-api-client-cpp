@@ -80,13 +80,6 @@ namespace greenapi {
 		Response removeAdmin(const nlohmann::json& group);
 
 		/*
-		* The method sets a group picture.
-		* https://green-api.com/en/docs/api/groups/SetGroupPicture/
-		* @param group - parameters for setting the group picture
-		*/
-		Response setGroupPicture(const nlohmann::json file, const nlohmann::json group);
-
-		/*
 		* The method makes the current account user leave the group chat.
 		* https://green-api.com/en/docs/api/groups/LeaveGroup/
 		* @param group - group parameters for exit

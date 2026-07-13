@@ -88,13 +88,6 @@ namespace greenapi
 		Response getAuthorizationCode(const unsigned long long phoneNumber);
 
 		/*
-		* The method is aimed for setting an account picture.
-		* https://green-api.com/en/docs/api/account/SetProfilePicture/
-		* @param path - path to the final file
-		*/
-		Response setProfilePicture(const nlohmann::json file);
-
-		/*
 		* The method is aimed to get information about the WhatsApp account
 		* https://green-api.com/en/docs/api/account/GetWaSettings/
 		*/

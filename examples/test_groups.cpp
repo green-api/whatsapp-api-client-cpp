@@ -163,30 +163,6 @@ int main_groups() {
 	}
 
 	/*
-	* The method sets a group picture.
-	* https://green-api.com/en/docs/api/groups/SetGroupPicture/
-	* @param group - parameters for setting the group picture
-	*/
-
-	nlohmann::json file{
-		{ "file","C:/1.jpg" }
-	};
-	nlohmann::json group{
-		{"groupId","120363294532719629@g.us"}
-	};
-
-	greenapi::Response setGroupPicture = instance1101000001.groups.setGroupPicture(file, group);
-
-	if (setGroupPicture.error) {
-		std::cout << "setGroupPicture error: {status code: " << setGroupPicture.status_code << ", request time: " << setGroupPicture.total_time << ", body: " << setGroupPicture.bodyStr << "}" << "\n" << std::endl;
-	}
-	else {
-		std::cout << "\tsetGroupPicture: " << setGroupPicture.bodyJson["setGroupPicture"] << "\n" << std::endl;
-		std::cout << "\turlAvatar: " << setGroupPicture.bodyJson["urlAvatar"] << "\n" << std::endl;
-		std::cout << "\treason: " << setGroupPicture.bodyJson["reason"] << "\n" << std::endl;
-	}
-
-	/*
 	* The method makes the current account user leave the group chat.
 	* https://green-api.com/en/docs/api/groups/LeaveGroup/
 	* @param group - group parameters for exit

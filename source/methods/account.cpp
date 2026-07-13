@@ -194,37 +194,6 @@ namespace greenapi
 		}
 	}
 
-	Response Account::setProfilePicture(const nlohmann::json file) {
-
-		Response response;
-		nlohmann::json bodyFile{ { "file","" } };
-
-		// Checking the chatId, message or options fields
-		if (!file.contains("file")) {
-			response.bodyStr = "Required chatId or file fields are missing";
-			return response;
-		}
-
-		bodyFile["file"] = file["file"].get<std::string>();
-
-		std::string url = *(this->apiUrl) + "/waInstance" + *(this->idInstance) + "/setProfilePicture/" + *(this->apiTokenInstance);
-		nlohmann::json body = nlohmann::json::object();
-
-		Request req{ url, "HTTP", "POST" , body, bodyFile, "data" };
-
-		try {
-			return request(req);
-		}
-		catch (const std::runtime_error& e) {
-
-			std::cerr << "Error: " << e.what() << std::endl;
-			Logger::getInstance().log(std::string(e.what()), "error");
-			response.error = true;
-			response.bodyStr = std::string(e.what());
-			return response;
-		}
-	}
-
 	Response Account::getWaSettings() {
 
 		Response response;
