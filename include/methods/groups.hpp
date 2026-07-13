@@ -93,6 +93,17 @@ namespace greenapi {
 		*/
 		Response leaveGroup(const nlohmann::json& group);
 
+		/*
+		* The method changes group chat settings (participant permissions). Beta version.
+		* https://green-api.com/en/docs/api/groups/UpdateGroupSettings/
+		* @param group - group settings parameters
+		* Required fields: groupId
+		* Optional fields (at least one required):
+		*   allowParticipantsEditGroupSettings - allow members to change name, picture, description, timer
+		*   allowParticipantsSendMessages - allow members to send messages to the group
+		*/
+		Response updateGroupSettings(const nlohmann::json& group);
+
 	};
 
 } // namespace greenapi

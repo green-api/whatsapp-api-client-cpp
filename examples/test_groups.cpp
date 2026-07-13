@@ -13,7 +13,7 @@ int main_groups() {
 	* Be sure to use the apiUrl and mediaUrl parameters specifically for the higher instance, so you will get the most stable API operation and minimal method response time.
 	* https://console.green-api.com
 	*/
-	greenapi::GreenApi instance1101000001{ "https://api.green-api.com","https://media.green-api.com","1101123456","87be9e9532fc49748f2a44b9242e55f2e89f4bf97ed6498f80" };
+	greenapi::GreenApi instance1101000001{ "https://7107.api.greenapi.com","https://7107.api.greenapi.com","710701676160","36f20dae0c964139a06f9d8223ea479e3722e557bc234be2a0" };
 
 	/*
 	* The method is aimed for creating a group chat. When creating a group, it is required to simulate human work.
@@ -203,6 +203,32 @@ int main_groups() {
 	}
 	else {
 		std::cout << "\tleaveGroup: " << leaveGroup.bodyStr << "\n" << std::endl;
+	}
+
+	/*
+	* The method changes group chat settings (participant permissions). Beta version.
+	* https://green-api.com/en/docs/api/groups/UpdateGroupSettings/
+	* @param group - group settings parameters
+	* example json object nlohmann::json group{
+	{"groupId","120363294532719629@g.us"},
+	{"allowParticipantsEditGroupSettings", true},
+	{"allowParticipantsSendMessages", true}
+	};
+	*/
+
+	nlohmann::json groupUpdateGroupSettings{
+		{"groupId","120363294532719629@g.us"},
+		{"allowParticipantsEditGroupSettings", true},
+		{"allowParticipantsSendMessages", true}
+	};
+
+	greenapi::Response updateGroupSettings = instance1101000001.groups.updateGroupSettings(groupUpdateGroupSettings);
+
+	if (updateGroupSettings.error) {
+		std::cout << "updateGroupSettings error: {status code: " << updateGroupSettings.status_code << ", request time: " << updateGroupSettings.total_time << ", body: " << updateGroupSettings.bodyStr << "}" << "\n" << std::endl;
+	}
+	else {
+		std::cout << "\tupdateGroupSettings: " << updateGroupSettings.bodyJson["updateGroupSettings"] << "\n" << std::endl;
 	}
 
 	return 0;

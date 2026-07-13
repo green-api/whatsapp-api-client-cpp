@@ -244,4 +244,25 @@ namespace greenapi
 		}
 	}
 
+	Response Account::getStateInstanceHistory(const unsigned int count) {
+
+		Response response;
+		unsigned int sendCount = (count == 0) ? 100 : count;
+
+		std::string url = *(this->apiUrl) + "/waInstance" + *(this->idInstance) + "/GetStateInstanceHistory/" + *(this->apiTokenInstance) + "?count=" + std::to_string(sendCount);
+		Request req{ url };
+
+		try {
+			return request(req);
+		}
+		catch (const std::runtime_error& e) {
+
+			std::cerr << "Error: " << e.what() << std::endl;
+			Logger::getInstance().log(std::string(e.what()), "error");
+			response.error = true;
+			response.bodyStr = std::string(e.what());
+			return response;
+		}
+	}
+
 }// namespace greenapi

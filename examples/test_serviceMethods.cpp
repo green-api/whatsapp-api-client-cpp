@@ -13,7 +13,7 @@ int main_serviceMethods() {
 	* Be sure to use the apiUrl and mediaUrl parameters specifically for the higher instance, so you will get the most stable API operation and minimal method response time.
 	* https://console.green-api.com
 	*/
-	greenapi::GreenApi instance1101000001{ "https://api.green-api.com","https://media.green-api.com","1101123456","87be9e9532fc49748f2a44b9242e55f2e89f4bf97ed6498f80" };
+	greenapi::GreenApi instance1101000001{ "https://7107.api.greenapi.com","https://7107.api.greenapi.com","710701676160","36f20dae0c964139a06f9d8223ea479e3722e557bc234be2a0" };
 
 	/*
 	* Example of using the checkWhatsapp method
@@ -155,9 +155,57 @@ int main_serviceMethods() {
 		std::cout << "setDisappearingChat error: {status code: " << setDisappearingChat.status_code << ", request time: " << setDisappearingChat.total_time << ", body: " << setDisappearingChat.bodyStr << "}" << "\n" << std::endl;
 	}
 	else {
-		std::cout << "\tchatId: " << getContactInfo.bodyJson["chatId"] << "\n" << std::endl;
-		std::cout << "\tephemeralExpiration: " << getContactInfo.bodyJson["ephemeralExpiration"] << "\n" << std::endl;
-		std::cout << "\tdisappearingMessagesInChat: " << getContactInfo.bodyJson["disappearingMessagesInChat"] << "\n" << std::endl;
+		std::cout << "\tchatId: " << setDisappearingChat.bodyJson["chatId"] << "\n" << std::endl;
+		std::cout << "\tephemeralExpiration: " << setDisappearingChat.bodyJson["ephemeralExpiration"] << "\n" << std::endl;
+		std::cout << "\tdisappearingMessagesInChat: " << setDisappearingChat.bodyJson["disappearingMessagesInChat"] << "\n" << std::endl;
+	}
+
+	/*
+	* Example of using the getChats method
+	* The method returns the list of chats of the current account in chronological order.
+	* Updates at most once per minute.
+	* https://green-api.com/en/docs/api/service/GetChats/
+	* @param count - number of chats to return (0 means all chats, default 0)
+	*/
+
+	// Get all chats
+	greenapi::Response getChats = instance1101000001.serviceMethods.getChats();
+
+	if (getChats.error) {
+		std::cout << "getChats error: {status code: " << getChats.status_code << ", request time: " << getChats.total_time << ", body: " << getChats.bodyStr << "}" << "\n" << std::endl;
+	}
+	else {
+		if (getChats.bodyJson.is_array() && !getChats.bodyJson.empty()) {
+			std::cout << "\tid: " << getChats.bodyJson[0]["id"] << "\n" << std::endl;
+			std::cout << "\tname: " << getChats.bodyJson[0]["name"] << "\n" << std::endl;
+			std::cout << "\ttype: " << getChats.bodyJson[0]["type"] << "\n" << std::endl;
+		}
+		else {
+			std::cout << "\tgetChats response: " << getChats.bodyStr << "\n" << std::endl;
+		}
+	}
+
+	/*
+	* Example of using the sendTyping method
+	* The method shows a "typing" or "recording audio" indicator in the specified chat.
+	* https://green-api.com/en/docs/api/service/SendTyping/
+	* @param message - nlohmann::json object with message parameters
+	* Required fields: chatId
+	* Optional fields: typingTime (1000-20000 ms), typingType ("recording" for audio)
+	* example json objects:
+	* Typing indicator: nlohmann::json message{ {"chatId","71234567890@c.us"}, {"typingTime",5000} };
+	* Recording indicator: nlohmann::json message{ {"chatId","71234567890@c.us"}, {"typingTime",3000}, {"typingType","recording"} };
+	*/
+
+	nlohmann::json messageSendTyping{ {"chatId","71234567890@c.us"}, {"typingTime", 5000} };
+
+	greenapi::Response sendTyping = instance1101000001.serviceMethods.sendTyping(messageSendTyping);
+
+	if (sendTyping.error) {
+		std::cout << "sendTyping error: {status code: " << sendTyping.status_code << ", request time: " << sendTyping.total_time << ", body: " << sendTyping.bodyStr << "}" << "\n" << std::endl;
+	}
+	else {
+		std::cout << "\tsendTyping: success" << "\n" << std::endl;
 	}
 
 	return 0;

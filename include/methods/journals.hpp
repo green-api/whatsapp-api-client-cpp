@@ -56,6 +56,22 @@ namespace greenapi {
 		*/
 		Response lastOutgoingMessages(const unsigned int minutes = 1440);
 
+		/*
+		* The method returns the last incoming calls of the account. In the default mode the calls for 24 hours are returned.
+		* Requires incomingWebhook and incomingCallWebhook settings to be enabled. Beta version.
+		* https://green-api.com/en/docs/api/journals/LastIncomingCalls/
+		*  @param minutes - time in minutes for which the calls should be displayed (default is 1440 minutes)
+		*/
+		Response lastIncomingCalls(const unsigned int minutes = 1440);
+
+		/*
+		* The method returns the last outgoing calls of the account. In the default mode the calls for 24 hours are returned.
+		* Requires outgoingCallWebhook setting to be enabled.
+		* https://green-api.com/en/docs/api/journals/LastOutgoingCalls/
+		*  @param minutes - time in minutes for which the calls should be displayed (default is 1440 minutes)
+		*/
+		Response lastOutgoingCalls(const unsigned int minutes = 1440);
+
 	};
 
 } // namespace greenapi

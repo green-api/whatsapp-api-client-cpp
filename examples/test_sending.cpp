@@ -13,7 +13,7 @@ int main_sending() {
 	* Be sure to use the apiUrl and mediaUrl parameters specifically for the higher instance, so you will get the most stable API operation and minimal method response time.
 	* https://console.green-api.com
 	*/
-	greenapi::GreenApi instance1101000001{ "https://api.green-api.com","https://media.green-api.com","1101123456","87be9e9532fc49748f2a44b9242e55f2e89f4bf97ed6498f80" };
+	greenapi::GreenApi instance1101000001{ "https://7107.api.greenapi.com","https://7107.api.greenapi.com","710701676160","36f20dae0c964139a06f9d8223ea479e3722e557bc234be2a0" };
 
 	/*
 	* Example of using the sendMessage method
@@ -290,6 +290,90 @@ int main_sending() {
 	}
 	else {
 		std::cout << "\tmessages: " << forwardMessages.bodyJson["messages"] << std::endl;
+	}
+
+	/*
+	* Example of using the sendInteractiveButtons method
+	* The method is aimed for sending a message with interactive buttons (types: copy, call, url) to a personal chat.
+	* Up to 3 buttons per message, button text up to 25 characters.
+	* @param message - nlohmann::json object with message parameters
+	* example json object nlohmann::json requestMessage{
+	{ "chatId","71234567890@c.us" },
+	{ "header","Header text" },
+	{ "body","Message body text" },
+	{ "footer","Footer text" },
+	{ "buttons", {
+		{{"type","url"}, {"buttonId","1"}, {"buttonText","Open website"}, {"url","https://green-api.com"}},
+		{{"type","call"}, {"buttonId","2"}, {"buttonText","Call us"}, {"phoneNumber","71234567890"}},
+		{{"type","copy"}, {"buttonId","3"}, {"buttonText","Copy code"}, {"copyCode","ABC123"}}
+		}
+	}
+	};
+	* https://green-api.com/en/docs/api/sending/SendInteractiveButtons/
+	*/
+
+	nlohmann::json sendInteractiveButtonsJson{
+		{ "chatId","71234567890@c.us" },
+		{ "header","Choose an action" },
+		{ "body","Press the button you need" },
+		{ "footer","GREEN API" },
+		{ "buttons", {
+			{{"type","url"}, {"buttonId","1"}, {"buttonText","Open website"}, {"url","https://green-api.com"}},
+			{{"type","call"}, {"buttonId","2"}, {"buttonText","Call us"}, {"phoneNumber","71234567890"}},
+			{{"type","copy"}, {"buttonId","3"}, {"buttonText","Copy code"}, {"copyCode","ABC123"}}
+			}
+		}
+	};
+
+	greenapi::Response sendInteractiveButtons = instance1101000001.sending.sendInteractiveButtons(sendInteractiveButtonsJson);
+
+	if (sendInteractiveButtons.error) {
+		std::cout << "sendInteractiveButtons error: {status code: " << sendInteractiveButtons.status_code << ", request time: " << sendInteractiveButtons.total_time << ", body: " << sendInteractiveButtons.bodyStr << "}" << "\n" << std::endl;
+	}
+	else {
+		std::cout << "\tidMessage: " << sendInteractiveButtons.bodyJson["idMessage"] << "\n" << std::endl;
+	}
+
+	/*
+	* Example of using the sendInteractiveButtonsReply method
+	* The method is aimed for sending a message with reply buttons (text buttons, each can be pressed once) to a personal chat.
+	* Up to 3 buttons per message, button text up to 25 characters. Beta version.
+	* @param message - nlohmann::json object with message parameters
+	* example json object nlohmann::json requestMessage{
+	{ "chatId","71234567890@c.us" },
+	{ "header","Survey" },
+	{ "body","Do you like our service?" },
+	{ "footer","Choose one option" },
+	{ "buttons", {
+		{{"buttonId","1"}, {"buttonText","Yes"}},
+		{{"buttonId","2"}, {"buttonText","No"}},
+		{{"buttonId","3"}, {"buttonText","Not sure"}}
+		}
+	}
+	};
+	* https://green-api.com/en/docs/api/sending/SendInteractiveButtonsReply/
+	*/
+
+	nlohmann::json sendInteractiveButtonsReplyJson{
+		{ "chatId","71234567890@c.us" },
+		{ "header","Survey" },
+		{ "body","Do you like our service?" },
+		{ "footer","Choose one option" },
+		{ "buttons", {
+			{{"buttonId","1"}, {"buttonText","Yes"}},
+			{{"buttonId","2"}, {"buttonText","No"}},
+			{{"buttonId","3"}, {"buttonText","Not sure"}}
+			}
+		}
+	};
+
+	greenapi::Response sendInteractiveButtonsReply = instance1101000001.sending.sendInteractiveButtonsReply(sendInteractiveButtonsReplyJson);
+
+	if (sendInteractiveButtonsReply.error) {
+		std::cout << "sendInteractiveButtonsReply error: {status code: " << sendInteractiveButtonsReply.status_code << ", request time: " << sendInteractiveButtonsReply.total_time << ", body: " << sendInteractiveButtonsReply.bodyStr << "}" << "\n" << std::endl;
+	}
+	else {
+		std::cout << "\tidMessage: " << sendInteractiveButtonsReply.bodyJson["idMessage"] << "\n" << std::endl;
 	}
 
 	return 0;

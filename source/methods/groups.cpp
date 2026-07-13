@@ -401,4 +401,54 @@ namespace greenapi
 		}
 	}
 
+	Response Groups::updateGroupSettings(const nlohmann::json& group) {
+
+		Response response;
+		nlohmann::json requestMessage{ { "groupId", "" } };
+
+		// Checking the groupId
+		if (!group.contains("groupId")) {
+			response.bodyStr = "Required groupId field are missing";
+			return response;
+		}
+		if (group["groupId"].get<std::string>().find('@') == std::string::npos) {
+			response.bodyStr = "The required @ symbol is lost in the groupId variable";
+			return response;
+		}
+		if (group["groupId"].get<std::string>().size() < 11) {
+			response.bodyStr = "groupId is not correct, the required chatId format for group chatId XXXXXXXXXX-XXXXXXXXXX@g.us or XXXXXXXXXXXXXXXXX@g.us";
+			return response;
+		}
+		if (!group.contains("allowParticipantsEditGroupSettings") && !group.contains("allowParticipantsSendMessages")) {
+			response.bodyStr = "At least one of allowParticipantsEditGroupSettings or allowParticipantsSendMessages fields must be specified";
+			return response;
+		}
+
+		requestMessage["groupId"] = group["groupId"];
+
+		// Checking the optional allowParticipantsEditGroupSettings field
+		if (group.contains("allowParticipantsEditGroupSettings")) {
+			requestMessage["allowParticipantsEditGroupSettings"] = group["allowParticipantsEditGroupSettings"];
+		}
+		// Checking the optional allowParticipantsSendMessages field
+		if (group.contains("allowParticipantsSendMessages")) {
+			requestMessage["allowParticipantsSendMessages"] = group["allowParticipantsSendMessages"];
+		}
+
+		std::string url = *(this->apiUrl) + "/waInstance" + *(this->idInstance) + "/updateGroupSettings/" + *(this->apiTokenInstance);
+		Request req{ url, "HTTP", "POST" , requestMessage };
+
+		try {
+			return request(req);
+		}
+		catch (const std::runtime_error& e) {
+
+			std::cerr << "Error: " << e.what() << std::endl;
+			Logger::getInstance().log(std::string(e.what()), "error");
+			response.error = true;
+			response.bodyStr = std::string(e.what());
+			return response;
+		}
+	}
+
 }// namespace greenapi

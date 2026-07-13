@@ -149,4 +149,46 @@ namespace greenapi
 		}
 	}
 
+	Response Journals::lastIncomingCalls(const unsigned int minutes) {
+
+		Response response;
+		unsigned int sendMinutes = (minutes == 0) ? 1440 : minutes;
+
+		std::string url = *(this->apiUrl) + "/waInstance" + *(this->idInstance) + "/lastIncomingCalls/" + *(this->apiTokenInstance) + "?minutes=" + std::to_string(sendMinutes);
+		Request req{ url };
+
+		try {
+			return request(req);
+		}
+		catch (const std::runtime_error& e) {
+
+			std::cerr << "Error: " << e.what() << std::endl;
+			Logger::getInstance().log(std::string(e.what()), "error");
+			response.error = true;
+			response.bodyStr = std::string(e.what());
+			return response;
+		}
+	}
+
+	Response Journals::lastOutgoingCalls(const unsigned int minutes) {
+
+		Response response;
+		unsigned int sendMinutes = (minutes == 0) ? 1440 : minutes;
+
+		std::string url = *(this->apiUrl) + "/waInstance" + *(this->idInstance) + "/lastOutgoingCalls/" + *(this->apiTokenInstance) + "?minutes=" + std::to_string(sendMinutes);
+		Request req{ url };
+
+		try {
+			return request(req);
+		}
+		catch (const std::runtime_error& e) {
+
+			std::cerr << "Error: " << e.what() << std::endl;
+			Logger::getInstance().log(std::string(e.what()), "error");
+			response.error = true;
+			response.bodyStr = std::string(e.what());
+			return response;
+		}
+	}
+
 }// namespace greenapi

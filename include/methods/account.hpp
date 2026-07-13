@@ -99,6 +99,13 @@ namespace greenapi
 		* https://green-api.com/en/docs/api/account/GetWaSettings/
 		*/
 		Response getWaSettings();
+
+		/*
+		* The method returns the history of instance state changes in chronological order.
+		* https://green-api.com/en/docs/api/account/GetStateInstanceHistory/
+		* @param count - number of records to retrieve (default 100)
+		*/
+		Response getStateInstanceHistory(const unsigned int count = 100);
 	};
 
 } // namespace greenapi

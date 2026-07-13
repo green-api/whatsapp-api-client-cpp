@@ -90,11 +90,33 @@ namespace greenapi
 		Response sendContact(const nlohmann::json message);
 
 		/*
-		* The method is intended for forwarding messages to a personal or group chat. 
+		* The method is intended for forwarding messages to a personal or group chat.
 		* https://green-api.com/en/docs/api/sending/ForwardMessages/
 		* @param message - nlohmann::json obj containing body fields
 		*/
 		Response forwardMessages(const nlohmann::json message);
+
+		/*
+		* The method is aimed for sending a message with interactive buttons (types: copy, call, url) to a personal chat.
+		* Up to 3 buttons per message, button text up to 25 characters.
+		* https://green-api.com/en/docs/api/sending/SendInteractiveButtons/
+		* @param message - nlohmann::json obj containing body fields
+		* Required fields: chatId, body, buttons (array)
+		* Optional fields: header, footer
+		* Button object fields: type ("copy"|"call"|"url"), buttonId, buttonText,
+		*   copyCode (for type=copy), phoneNumber (for type=call), url (for type=url)
+		*/
+		Response sendInteractiveButtons(const nlohmann::json message);
+
+		/*
+		* The method is aimed for sending a message with reply buttons (text buttons, each can be pressed once) to a personal chat.
+		* Up to 3 buttons per message, button text up to 25 characters. Beta version.
+		* https://green-api.com/en/docs/api/sending/SendInteractiveButtonsReply/
+		* @param message - nlohmann::json obj containing body fields
+		* Required fields: chatId, body, buttons (array with buttonId and buttonText)
+		* Optional fields: header, footer
+		*/
+		Response sendInteractiveButtonsReply(const nlohmann::json message);
 
 	};
 
