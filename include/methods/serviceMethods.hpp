@@ -98,7 +98,7 @@ namespace greenapi {
 		* https://green-api.com/en/docs/api/service/GetChats/
 		* @param count - number of chats to return (0 means all chats, default 0)
 		*/
-		Response getChats(const unsigned int count = 0);
+		Response getChats(const unsigned int count = 100);
 
 		/*
 		* The method shows a "typing" or "recording audio" indicator in the specified chat.
