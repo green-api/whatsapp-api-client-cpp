@@ -96,7 +96,7 @@ namespace greenapi {
 		* The method returns the list of chats of the current account in chronological order.
 		* Updates at most once per minute.
 		* https://green-api.com/en/docs/api/service/GetChats/
-		* @param count - number of chats to return (0 means all chats, default 0)
+		* @param count - number of chats to return (0 means all chats, default 100)
 		*/
 		Response getChats(const unsigned int count = 100);
 
