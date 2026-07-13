@@ -490,6 +490,120 @@ namespace greenapi
 		}
 	}
 
+	Response Sending::sendInteractiveButtons(const nlohmann::json message) {
+
+		Response response;
+		nlohmann::json requestMessage{ { "chatId","" }, { "body","" }, { "buttons", nlohmann::json::array() } };
+
+		// Checking the chatId, body and buttons fields
+		if (!message.contains("chatId") || !message.contains("body") || !message.contains("buttons")) {
+			response.bodyStr = "Required chatId, body or buttons fields are missing";
+			return response;
+		}
+		if (message["chatId"].get<std::string>().find('@') == std::string::npos) {
+			response.bodyStr = "The required @ symbol is lost in the chatId variable";
+			return response;
+		}
+		if (message["chatId"].get<std::string>().size() < 11) {
+			response.bodyStr = "chatId is not correct, the required chatId format for individual chat is XXXXXXXXXXX@c.us";
+			return response;
+		}
+		if (!message["buttons"].is_array()) {
+			response.bodyStr = "The key 'buttons' does not exist or is not an array.";
+			return response;
+		}
+		if (message["buttons"].size() < 1 || message["buttons"].size() > 3) {
+			response.bodyStr = "The number of buttons must be between 1 and 3";
+			return response;
+		}
+
+		requestMessage["chatId"] = message["chatId"];
+		requestMessage["body"] = message["body"];
+		requestMessage["buttons"] = message["buttons"];
+
+		// Checking the optional header field
+		if (message.contains("header")) {
+			requestMessage["header"] = message["header"];
+		}
+		// Checking the optional footer field
+		if (message.contains("footer")) {
+			requestMessage["footer"] = message["footer"];
+		}
+
+		std::string url = *(this->apiUrl) + "/waInstance" + *(this->idInstance) + "/sendInteractiveButtons/" + *(this->apiTokenInstance);
+
+		Request req{ url, "HTTP", "POST" , requestMessage };
+
+		try {
+			return request(req);
+		}
+		catch (const std::runtime_error& e) {
+
+			std::cerr << "Error: " << e.what() << std::endl;
+			Logger::getInstance().log(std::string(e.what()), "error");
+			response.error = true;
+			response.bodyStr = std::string(e.what());
+			return response;
+		}
+	}
+
+	Response Sending::sendInteractiveButtonsReply(const nlohmann::json message) {
+
+		Response response;
+		nlohmann::json requestMessage{ { "chatId","" }, { "body","" }, { "buttons", nlohmann::json::array() } };
+
+		// Checking the chatId, body and buttons fields
+		if (!message.contains("chatId") || !message.contains("body") || !message.contains("buttons")) {
+			response.bodyStr = "Required chatId, body or buttons fields are missing";
+			return response;
+		}
+		if (message["chatId"].get<std::string>().find('@') == std::string::npos) {
+			response.bodyStr = "The required @ symbol is lost in the chatId variable";
+			return response;
+		}
+		if (message["chatId"].get<std::string>().size() < 11) {
+			response.bodyStr = "chatId is not correct, the required chatId format for individual chat is XXXXXXXXXXX@c.us";
+			return response;
+		}
+		if (!message["buttons"].is_array()) {
+			response.bodyStr = "The key 'buttons' does not exist or is not an array.";
+			return response;
+		}
+		if (message["buttons"].size() < 1 || message["buttons"].size() > 3) {
+			response.bodyStr = "The number of buttons must be between 1 and 3";
+			return response;
+		}
+
+		requestMessage["chatId"] = message["chatId"];
+		requestMessage["body"] = message["body"];
+		requestMessage["buttons"] = message["buttons"];
+
+		// Checking the optional header field
+		if (message.contains("header")) {
+			requestMessage["header"] = message["header"];
+		}
+		// Checking the optional footer field
+		if (message.contains("footer")) {
+			requestMessage["footer"] = message["footer"];
+		}
+
+		std::string url = *(this->apiUrl) + "/waInstance" + *(this->idInstance) + "/sendInteractiveButtonsReply/" + *(this->apiTokenInstance);
+
+		Request req{ url, "HTTP", "POST" , requestMessage };
+
+		try {
+			return request(req);
+		}
+		catch (const std::runtime_error& e) {
+
+			std::cerr << "Error: " << e.what() << std::endl;
+			Logger::getInstance().log(std::string(e.what()), "error");
+			response.error = true;
+			response.bodyStr = std::string(e.what());
+			return response;
+		}
+	}
+
 	std::string Sending::getAfterDot(const std::string& input) {
 		size_t pos = input.find('.');
 		if (pos != std::string::npos) {

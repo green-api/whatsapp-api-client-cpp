@@ -194,23 +194,11 @@ namespace greenapi
 		}
 	}
 
-	Response Account::setProfilePicture(const nlohmann::json file) {
+	Response Account::getWaSettings() {
 
 		Response response;
-		nlohmann::json bodyFile{ { "file","" } };
-
-		// Checking the chatId, message or options fields
-		if (!file.contains("file")) {
-			response.bodyStr = "Required chatId or file fields are missing";
-			return response;
-		}
-
-		bodyFile["file"] = file["file"].get<std::string>();
-
-		std::string url = *(this->apiUrl) + "/waInstance" + *(this->idInstance) + "/setProfilePicture/" + *(this->apiTokenInstance);
-		nlohmann::json body = nlohmann::json::object();
-
-		Request req{ url, "HTTP", "POST" , body, bodyFile, "data" };
+		std::string url = *(this->apiUrl) + "/waInstance" + *(this->idInstance) + "/getWaSettings/" + *(this->apiTokenInstance);
+		Request req{ url };
 
 		try {
 			return request(req);
@@ -225,10 +213,12 @@ namespace greenapi
 		}
 	}
 
-	Response Account::getWaSettings() {
+	Response Account::getStateInstanceHistory(const unsigned int count) {
 
 		Response response;
-		std::string url = *(this->apiUrl) + "/waInstance" + *(this->idInstance) + "/getWaSettings/" + *(this->apiTokenInstance);
+		unsigned int sendCount = (count == 0) ? 100 : count;
+
+		std::string url = *(this->apiUrl) + "/waInstance" + *(this->idInstance) + "/GetStateInstanceHistory/" + *(this->apiTokenInstance) + "?count=" + std::to_string(sendCount);
 		Request req{ url };
 
 		try {

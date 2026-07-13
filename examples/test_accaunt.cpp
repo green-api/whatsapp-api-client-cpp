@@ -13,7 +13,7 @@ int main_account() {
 	* Be sure to use the apiUrl and mediaUrl parameters specifically for the higher instance, so you will get the most stable API operation and minimal method response time.
 	* https://console.green-api.com
 	*/
-	greenapi::GreenApi instance1101000001{ "https://api.green-api.com","https://media.green-api.com","1101123456","123456789632c49748f2a44b92" };
+	greenapi::GreenApi instance1101000001{ "api.green-api.com","api.green-api.com","710701676160","36f20dae0c964139a06f9d8223ea479e3722e557bc234be2a0" };
 
 	/*
 	* Example of using the getSettings method
@@ -147,25 +147,26 @@ int main_account() {
 	}
 
 	/*
-	* Example of using the setProfilePicture method
-	* The method is aimed for setting an account picture.
-	* https://green-api.com/en/docs/api/account/SetProfilePicture/
-	* @param path - nlohmann::json obj path to the final file
+	* Example of using the getStateInstanceHistory method
+	* The method returns the history of instance state changes in chronological order.
+	* https://green-api.com/en/docs/api/account/GetStateInstanceHistory/
+	* @param count - number of records to retrieve (default 100)
 	*/
-	nlohmann::json setProfilePictureJson{
-		{ "file","C:/1.png" }
-	};
+	greenapi::Response getStateInstanceHistory = instance1101000001.account.getStateInstanceHistory();
 
-	greenapi::Response setProfilePicture = instance1101000001.account.setProfilePicture(setProfilePictureJson);
-
-	if (setProfilePicture.error) {
-		std::cout << "setProfilePicture error: {status code: " << setProfilePicture.status_code << ", request time: " << setProfilePicture.total_time << ", body: " << setProfilePicture.bodyStr << "}" << "\n" << std::endl;
+	if (getStateInstanceHistory.error) {
+		std::cout << "getStateInstanceHistory error: {status code: " << getStateInstanceHistory.status_code << ", request time: " << getStateInstanceHistory.total_time << ", body: " << getStateInstanceHistory.bodyStr << "}" << "\n" << std::endl;
 	}
 	else {
-		std::cout << "instance " + instance1101000001.idInstance + " setProfilePicture:" << std::endl;
-		std::cout << "\turlAvatar: " << setProfilePicture.bodyJson["urlAvatar"] << std::endl;
-		std::cout << "\tsetProfilePicture: " << setProfilePicture.bodyJson["setProfilePicture"] << std::endl;
-		std::cout << "\treason: " << setProfilePicture.bodyJson["reason"] << "\n" << std::endl;
+		if (getStateInstanceHistory.bodyJson.is_array() && !getStateInstanceHistory.bodyJson.empty()) {
+			std::cout << "instance " + instance1101000001.idInstance + " getStateInstanceHistory:" << std::endl;
+			std::cout << "\tstateInstance: " << getStateInstanceHistory.bodyJson[0]["stateInstance"] << std::endl;
+			std::cout << "\ttimestamp: " << getStateInstanceHistory.bodyJson[0]["timestamp"] << std::endl;
+			std::cout << "\tphoneNumber: " << getStateInstanceHistory.bodyJson[0]["phoneNumber"] << "\n" << std::endl;
+		}
+		else {
+			std::cout << "instance " + instance1101000001.idInstance + " getStateInstanceHistory: " << getStateInstanceHistory.bodyStr << "\n" << std::endl;
+		}
 	}
 
 	return 0;

@@ -345,4 +345,83 @@ namespace greenapi
 		}
 	}
 
+	Response ServiceMethods::getChats(const unsigned int count) {
+
+		Response response;
+		std::string url = *(this->apiUrl) + "/waInstance" + *(this->idInstance) + "/getChats/" + *(this->apiTokenInstance);
+
+		if (count > 0) {
+			url += "?count=" + std::to_string(count);
+		}
+
+		Request req{ url };
+
+		try {
+			return request(req);
+		}
+		catch (const std::runtime_error& e) {
+
+			std::cerr << "Error: " << e.what() << std::endl;
+			Logger::getInstance().log(std::string(e.what()), "error");
+			response.error = true;
+			response.bodyStr = std::string(e.what());
+			return response;
+		}
+	}
+
+	Response ServiceMethods::sendTyping(const nlohmann::json& message) {
+
+		Response response;
+		nlohmann::json requestMessage{ { "chatId", "" } };
+
+		// Checking the chatId
+		if (!message.contains("chatId")) {
+			response.bodyStr = "Required chatId field are missing";
+			return response;
+		}
+		if (message["chatId"].get<std::string>().find('@') == std::string::npos) {
+			response.bodyStr = "The required @ symbol is lost in the chatId variable";
+			return response;
+		}
+		if (message["chatId"].get<std::string>().size() < 11) {
+			response.bodyStr = "chatId is not correct, the required chatId format for individual chat is XXXXXXXXXXX@c.us, group chatId XXXXXXXXXX-XXXXXXXXXX@g.us or XXXXXXXXXXXXXXXXX@g.us";
+			return response;
+		}
+
+		requestMessage["chatId"] = message["chatId"];
+
+		// Checking the optional typingTime field (1000-20000 ms)
+		if (message.contains("typingTime")) {
+			int typingTime = message["typingTime"].get<int>();
+			if (typingTime < 1000) {
+				response.bodyStr = "typingTime must be at least 1000 ms";
+				return response;
+			}
+			if (typingTime > 20000) {
+				response.bodyStr = "typingTime must be at most 20000 ms";
+				return response;
+			}
+			requestMessage["typingTime"] = typingTime;
+		}
+		// Checking the optional typingType field
+		if (message.contains("typingType")) {
+			requestMessage["typingType"] = message["typingType"];
+		}
+
+		std::string url = *(this->apiUrl) + "/waInstance" + *(this->idInstance) + "/sendTyping/" + *(this->apiTokenInstance);
+		Request req{ url, "HTTP", "POST" , requestMessage };
+
+		try {
+			return request(req);
+		}
+		catch (const std::runtime_error& e) {
+
+			std::cerr << "Error: " << e.what() << std::endl;
+			Logger::getInstance().log(std::string(e.what()), "error");
+			response.error = true;
+			response.bodyStr = std::string(e.what());
+			return response;
+		}
+	}
+
 }// namespace greenapi

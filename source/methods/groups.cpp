@@ -323,47 +323,6 @@ namespace greenapi
 		}
 	}
 
-	Response Groups::setGroupPicture(const nlohmann::json file, const nlohmann::json group) {
-
-		Response response;
-		nlohmann::json body{ { "groupId","" } };
-		nlohmann::json bodyFile{ { "file","" } };
-
-		// Checking the groupId and file fields
-		if (!group.contains("groupId") || !file.contains("file")) {
-			response.bodyStr = "Required groupId or file fields are missing";
-			return response;
-		}
-		if (group["groupId"].get<std::string>().find('@') == std::string::npos) {
-			response.bodyStr = "The required @ symbol is lost in the groupId variable";
-			return response;
-		}
-		if (group["groupId"].get<std::string>().size() < 11) {
-			response.bodyStr = "groupId is not correct, the required chatId format for group chatId XXXXXXXXXX-XXXXXXXXXX@g.us or XXXXXXXXXXXXXXXXX@g.us";
-			return response;
-		}
-
-		bodyFile["file"] = file["file"].get<std::string>();
-
-		body["groupId"] = group["groupId"];
-
-		std::string url = *(this->apiUrl) + "/waInstance" + *(this->idInstance) + "/setGroupPicture/" + *(this->apiTokenInstance);
-
-		Request req{ url, "HTTP", "POST" , body, bodyFile, "data" };
-
-		try {
-			return request(req);
-		}
-		catch (const std::runtime_error& e) {
-
-			std::cerr << "Error: " << e.what() << std::endl;
-			Logger::getInstance().log(std::string(e.what()), "error");
-			response.error = true;
-			response.bodyStr = std::string(e.what());
-			return response;
-		}
-	}
-
 	Response Groups::leaveGroup(const nlohmann::json& group) {
 
 		Response response;
@@ -386,6 +345,56 @@ namespace greenapi
 		requestMessage["groupId"] = group["groupId"];
 
 		std::string url = *(this->apiUrl) + "/waInstance" + *(this->idInstance) + "/leaveGroup/" + *(this->apiTokenInstance);
+		Request req{ url, "HTTP", "POST" , requestMessage };
+
+		try {
+			return request(req);
+		}
+		catch (const std::runtime_error& e) {
+
+			std::cerr << "Error: " << e.what() << std::endl;
+			Logger::getInstance().log(std::string(e.what()), "error");
+			response.error = true;
+			response.bodyStr = std::string(e.what());
+			return response;
+		}
+	}
+
+	Response Groups::updateGroupSettings(const nlohmann::json& group) {
+
+		Response response;
+		nlohmann::json requestMessage{ { "groupId", "" } };
+
+		// Checking the groupId
+		if (!group.contains("groupId")) {
+			response.bodyStr = "Required groupId field are missing";
+			return response;
+		}
+		if (group["groupId"].get<std::string>().find('@') == std::string::npos) {
+			response.bodyStr = "The required @ symbol is lost in the groupId variable";
+			return response;
+		}
+		if (group["groupId"].get<std::string>().size() < 11) {
+			response.bodyStr = "groupId is not correct, the required chatId format for group chatId XXXXXXXXXX-XXXXXXXXXX@g.us or XXXXXXXXXXXXXXXXX@g.us";
+			return response;
+		}
+		if (!group.contains("allowParticipantsEditGroupSettings") && !group.contains("allowParticipantsSendMessages")) {
+			response.bodyStr = "At least one of allowParticipantsEditGroupSettings or allowParticipantsSendMessages fields must be specified";
+			return response;
+		}
+
+		requestMessage["groupId"] = group["groupId"];
+
+		// Checking the optional allowParticipantsEditGroupSettings field
+		if (group.contains("allowParticipantsEditGroupSettings")) {
+			requestMessage["allowParticipantsEditGroupSettings"] = group["allowParticipantsEditGroupSettings"];
+		}
+		// Checking the optional allowParticipantsSendMessages field
+		if (group.contains("allowParticipantsSendMessages")) {
+			requestMessage["allowParticipantsSendMessages"] = group["allowParticipantsSendMessages"];
+		}
+
+		std::string url = *(this->apiUrl) + "/waInstance" + *(this->idInstance) + "/updateGroupSettings/" + *(this->apiTokenInstance);
 		Request req{ url, "HTTP", "POST" , requestMessage };
 
 		try {

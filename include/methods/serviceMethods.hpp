@@ -85,12 +85,29 @@ namespace greenapi {
 		Response unarchiveChat(const nlohmann::json& message);
 
 		/*
-		* The method is aimed for changing settings of disappearing messages in chats. 
+		* The method is aimed for changing settings of disappearing messages in chats.
 		* The standard settings of the application are to be used: 0 (off), 86400 (24 hours), 604800 (7 days), 7776000 (90 days).
 		* https://green-api.com/en/docs/api/service/SetDisappearingChat/
 		* @param message - data with chat number and time
 		*/
 		Response setDisappearingChat(const nlohmann::json& message);
+
+		/*
+		* The method returns the list of chats of the current account in chronological order.
+		* Updates at most once per minute.
+		* https://green-api.com/en/docs/api/service/GetChats/
+		* @param count - number of chats to return (0 means all chats, default 100)
+		*/
+		Response getChats(const unsigned int count = 100);
+
+		/*
+		* The method shows a "typing" or "recording audio" indicator in the specified chat.
+		* https://green-api.com/en/docs/api/service/SendTyping/
+		* @param message - nlohmann::json obj containing body fields
+		* Required fields: chatId
+		* Optional fields: typingTime (1000-20000 ms), typingType ("recording" for audio, omit for typing)
+		*/
+		Response sendTyping(const nlohmann::json& message);
 
 	};
 

@@ -13,7 +13,7 @@ int main_journals() {
 	* Be sure to use the apiUrl and mediaUrl parameters specifically for the higher instance, so you will get the most stable API operation and minimal method response time.
 	* https://console.green-api.com
 	*/
-	greenapi::GreenApi instance1101000001{ "https://api.green-api.com","https://media.green-api.com","1101123456","87be9e9532fc49748f2a44b9242e55f2e89f4bf97ed6498f80" };
+	greenapi::GreenApi instance1101000001{ "api.green-api.com","api.green-api.com","710701676160","36f20dae0c964139a06f9d8223ea479e3722e557bc234be2a0" };
 
 	/*
 	* Example of using the lastIncomingMessages method
@@ -93,6 +93,38 @@ int main_journals() {
 	}
 	else {
 		std::cout << "\tresponse body: " << getMessage.bodyStr << "\n" << std::endl;
+	}
+
+	/*
+	* Example of using the lastIncomingCalls method
+	* The method returns the last incoming calls of the account. In the default mode the calls for 24 hours are returned.
+	* Requires incomingWebhook and incomingCallWebhook settings to be enabled. Beta version.
+	* https://green-api.com/en/docs/api/journals/LastIncomingCalls/
+	*  @param minutes - time in minutes for which the calls should be displayed (default is 1440 minutes)
+	*/
+	greenapi::Response lastIncomingCalls = instance1101000001.journals.lastIncomingCalls();
+
+	if (lastIncomingCalls.error) {
+		std::cout << "lastIncomingCalls error: {status code: " << lastIncomingCalls.status_code << ", request time: " << lastIncomingCalls.total_time << ", body: " << lastIncomingCalls.bodyStr << "}" << "\n" << std::endl;
+	}
+	else {
+		std::cout << "\tresponse body: " << lastIncomingCalls.bodyStr << "\n" << std::endl;
+	}
+
+	/*
+	* Example of using the lastOutgoingCalls method
+	* The method returns the last outgoing calls of the account. In the default mode the calls for 24 hours are returned.
+	* Requires outgoingCallWebhook setting to be enabled.
+	* https://green-api.com/en/docs/api/journals/LastOutgoingCalls/
+	*  @param minutes - time in minutes for which the calls should be displayed (default is 1440 minutes)
+	*/
+	greenapi::Response lastOutgoingCalls = instance1101000001.journals.lastOutgoingCalls();
+
+	if (lastOutgoingCalls.error) {
+		std::cout << "lastOutgoingCalls error: {status code: " << lastOutgoingCalls.status_code << ", request time: " << lastOutgoingCalls.total_time << ", body: " << lastOutgoingCalls.bodyStr << "}" << "\n" << std::endl;
+	}
+	else {
+		std::cout << "\tresponse body: " << lastOutgoingCalls.bodyStr << "\n" << std::endl;
 	}
 
 	return 0;
